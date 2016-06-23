@@ -53,4 +53,14 @@ Rails.application.routes.draw do
   #     # (app/controllers/admin/products_controller.rb)
   #     resources :products
   #   end
+  resources :nodes
+  resources :links
+  resources :graphs do
+    member do
+      post 'add_link'
+      post 'query_links'
+      post 'query_links_from_A_with_length'
+      post 'query_links_to_B_with_length'
+    end
+  end
 end

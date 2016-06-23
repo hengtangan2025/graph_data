@@ -1,0 +1,10 @@
+.page-new-graph
+  %h2 新建图表
+  %hr
+  = simple_form_for :graph, :url => {:action => :create}, :method => :post  do |f|
+    .input-outport
+      = f.input :name, label: '新建图表名称'
+    %button.btn.btn-defualt
+      = '提交'
+    %button.btn.btn-defualt
+      %a{:href => "/graphs/new"}= '取消'

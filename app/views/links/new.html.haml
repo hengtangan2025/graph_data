@@ -1,0 +1,19 @@
+.page-enter-link-data
+  %h2 录入数据
+  -if !notice.nil?
+    -if notice == '保存成功'
+      .notice
+        = notice
+    -else
+      .notice
+        %p 前置知识和后置知识不为空
+  %hr
+  = simple_form_for :link, :url => {:action => :create}, :method => :post  do |f|
+    .input-outport
+      = f.input :input_node_name, label: '前置节点'
+      = f.input :output_node_name, label: '后置节点'
+      = f.input :kind,  label: '请选择连线类型', collection: [ "actual", "expected"]
+    %button.btn.btn-defualt
+      = '提交'
+    %button.btn.btn-defualt
+      %a{:href => "/links/new"}= '取消'

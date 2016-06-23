@@ -45,3 +45,7 @@ group :development do
   gem 'spring'
 end
 
+gem 'mongoid', '~> 4.0.2'
+gem 'simple_form'
+gem 'haml'
+gem 'enumerize'

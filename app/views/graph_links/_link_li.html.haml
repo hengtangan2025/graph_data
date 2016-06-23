@@ -1,0 +1,8 @@
+%li.link
+  = Node.find(link.input_node_id).name
+  = '->'
+  = Node.find(link.output_node_id).name
+  路径类型：
+  = link.kind
+  %button.query-links= '修改路径'
+  %button= link_to '删除', "/links/#{link.id}?graph_id=#{link.graph_id}", :method => :delete, :class => "btn btn-default delete-link"

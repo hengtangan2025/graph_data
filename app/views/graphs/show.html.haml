@@ -1,0 +1,51 @@
+.page-graph-show
+  .graph-name
+    图表名称:
+    = @graph.name
+  .graph-link
+    图表包含的路径:
+    %ul.links
+      - @graph.links.each do |link|
+        %li.link
+          = Node.find(link.input_node_id).name
+          = '->'
+          = Node.find(link.output_node_id).name
+          路径类型：
+          = link.kind
+          %button.query-links= '修改路径'
+          %button= link_to '删除', "/links/#{link.id}?graph_id=#{@graph.id}", :method => :delete, :class => "btn btn-default delete-link"
+  %hr
+  .add-links{:data => {:"graph-id" => @graph.id.to_s}}
+    增加路径
+    .input-node
+      =text_area_tag 'transferd_string', nil, rows: 1, cols: 45, placeholder: "输入前置节点的名称" ,class: 'input-node-name'
+    .output-node
+      =text_area_tag 'transferd_string', nil, rows: 1, cols: 45, placeholder: "输入后续节点的名称" ,class: 'output-node-name'
+    .choice-kind
+      =select_tag 'kind', '<option>actual</option><option>expected</option>'.html_safe,class: 'kind'
+    %button.add-button= '增加路径'
+  %hr
+  .query-all-links-from-A-to-B
+    .part-left
+      查找起点到终点的路径
+      .first-node
+        =text_area_tag 'transferd_string', nil, rows: 1, cols: 45, placeholder: "输入起点" ,class: 'first-node-name'
+      .last-node
+        =text_area_tag 'transferd_string', nil, rows: 1, cols: 45, placeholder: "输入终点" ,class: 'last-node-name'
+      %button.query-links= '确定'
+      .link-from-A-with-length
+        根据起点查找固定长度的路径
+        .input
+          =text_area_tag 'transferd_string', nil, rows: 1, cols: 45, placeholder: "输入起点" ,class: 'first-node-name'
+          =text_area_tag 'transferd_string', nil, rows: 1, cols: 45, placeholder: "输入路径长度" ,class: 'length'
+      %button.query-links-from-A-with-length= '确定'
+      .link-to-B-with-length
+        根据终点查找固定长度的路径
+        .input
+          =text_area_tag 'transferd_string', nil, rows: 1, cols: 45, placeholder: "输入终点" ,class: 'last-node-name'
+          =text_area_tag 'transferd_string', nil, rows: 1, cols: 45, placeholder: "输入路径长度" ,class: 'length'
+      %button.query-links-to-B-with-length= '确定'
+    .part-center
+    .part-right
+      %textarea.result{rows:"20", cols:"70"}
+  %hr
