@@ -66,6 +66,46 @@ class Graph
         console.log(msg.result)
         jQuery(".query-all-links-from-A-to-B .part-right .result").val(msg.result)
 
+
+    @$eml.on "click", ".link .edit-link",=>
+      a = jQuery(event.target).closest(".link").find(".link-info").text()
+      jQuery(event.target).hide()
+      jQuery(event.target).closest(".link").find(".delete-button").hide()
+      jQuery(event.target).closest(".link").find(".link-edit-form").show()
+
+    @$eml.on "click", ".link .link-edit-form .update-button",=>
+      $link_edit_form = jQuery(event.target).closest(".link-edit-form")
+      input_node = $link_edit_form.find(".input-node-name").val()
+      output_node = $link_edit_form.find(".output-node-name").val()
+      kind = $link_edit_form.find(".kind").val()
+      text = input_node + ' -> ' + output_node + ' 路径类型： ' + kind
+      link_id = $link_edit_form.closest(".link").data("link-id")
+      jQuery.ajax
+        url: "/graphs/update_link",
+        method: 'post',
+        data: {
+          input_node: input_node,
+          output_node: output_node,
+          link_kind: kind,
+          id: link_id
+        }
+        type: "json"
+      .success (msg) =>
+        console.log(msg.input_node)
+        $link_edit_form.closest(".link").find(".link-info").text(text)
+        $link_edit_form.closest(".link").find(".link-edit-form").hide()
+        $link_edit_form.closest(".link").find(".edit-link").show()
+        $link_edit_form.closest(".link").find(".delete-button").show()
+
+    @$eml.on "click", ".link .link-edit-form .cancel",=>
+      $link = jQuery(event.target).closest(".link-edit-form").closest(".link")
+      $link.find(".link-edit-form").hide()
+      $link.find(".edit-link").show()
+      $link.find(".delete-button").show()
+
+
+
+
 jQuery(document).on "ready page:load", ->
   if jQuery(".page-graph-show").length > 0
     new Graph jQuery(".page-graph-show")

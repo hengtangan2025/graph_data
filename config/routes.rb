@@ -62,5 +62,9 @@ Rails.application.routes.draw do
       post 'query_links_from_A_with_length'
       post 'query_links_to_B_with_length'
     end
+
+    collection do
+      post 'update_link'
+    end
   end
 end

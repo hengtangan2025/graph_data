@@ -4,7 +4,7 @@ class GraphsController < ApplicationController
   end
 
   def index
-    
+    @graph = Graph.all
   end
 
   def create
@@ -46,11 +46,17 @@ class GraphsController < ApplicationController
     render :status => 500
   end
 
-  def edit_link
-    link = LInk.find(params[:id])
+  def update_link
+    link = Link.find(params[:id])
     input_node = Node.where(:name => params[:input_node]).all.first
     output_node = Node.where(:name => params[:output_node]).all.first
     link.update(:input_node_id => input_node.id, :output_node_id => output_node.id, :kind => params[:link_kind])
+    link.reload
+    render :json => {
+      :input_node    => Node.find(link.input_node_id).name,
+      :output_node => Node.find(link.output_node_id).name,
+      :kind => link.kind
+    }
   end
 
   def query_links
@@ -78,7 +84,9 @@ class GraphsController < ApplicationController
   end
 
   def destroy
-    
+    graph = Graph.find(params[:id])
+    graph.destroy
+    redirect_to "/graphs"
   end
 
   private
@@ -123,14 +131,8 @@ class GraphsController < ApplicationController
       first_node = Node.where(:name => first_node_name).all.first
       get_links = graph.links.where(:input_node_id => first_node.id.to_s).all.to_a
       get_links.each do |link|
-        p 1111111111111
-        p link.id
         link_outport = Node.find(link.output_node_id)
-        p 2222222222222
-        p link_outport
         obj[:link_outport] = outport_array
-        p 33333333333
-        p obj[:link_outport]
         hash = {}
         input_node = Node.find(link.input_node_id)
         hash[:inPortName] = input_node.name

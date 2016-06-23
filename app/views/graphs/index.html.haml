@@ -1,0 +1,5 @@
+.page-graph-index
+  - @graph.each do |graph|
+    .graph_name 
+      %a{:href => "/graphs/#{graph.id}"}= graph.name
+      = link_to '删除', "/graphs/#{graph.id}", :method => :delete, :class => "delete-graph"

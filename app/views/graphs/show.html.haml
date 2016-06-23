@@ -6,14 +6,24 @@
     图表包含的路径:
     %ul.links
       - @graph.links.each do |link|
-        %li.link
-          = Node.find(link.input_node_id).name
-          = '->'
-          = Node.find(link.output_node_id).name
-          路径类型：
-          = link.kind
-          %button.query-links= '修改路径'
-          %button= link_to '删除', "/links/#{link.id}?graph_id=#{@graph.id}", :method => :delete, :class => "btn btn-default delete-link"
+        %li.link{:data => {:"link-id" => link.id.to_s}}
+          .link-info
+            = Node.find(link.input_node_id).name
+            = '->'
+            = Node.find(link.output_node_id).name
+            路径类型：
+            = link.kind
+          %button.edit-link= '修改路径'
+          %button.delete-button= link_to '删除', "/links/#{link.id}?graph_id=#{@graph.id}", :method => :delete, :class => "btn btn-default delete-link"
+          .link-edit-form{:style => 'display:none'}
+            .input-node
+              =text_area_tag 'transferd_string', nil, rows: 1, cols: 45, placeholder: "输入前置节点的名称" ,class: 'input-node-name'
+            .output-node
+              =text_area_tag 'transferd_string', nil, rows: 1, cols: 45, placeholder: "输入后续节点的名称" ,class: 'output-node-name'
+            .choice-kind
+              =select_tag 'kind', '<option>actual</option><option>expected</option>'.html_safe,class: 'kind'
+            %button.update-button= '修改路径'
+            %button.cancel= '取消'
   %hr
   .add-links{:data => {:"graph-id" => @graph.id.to_s}}
     增加路径
